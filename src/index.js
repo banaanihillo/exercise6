@@ -1,19 +1,43 @@
-/*
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react"
+import ReactDOM from "react-dom"
+import {createStore} from "redux"
+import feedbackReducer from "./reducers/feedbackReducer"
+require("./styles.css")
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const store = createStore(feedbackReducer)
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
-*/
+const App = () => {
+  return (
+    <div>
+        <p>
+            Positive feedback given: {store.getState().positive}
+            <button onClick = {() => store.dispatch({type: "POSITIVE"})}>
+                Click here to give positive feedback
+            </button>
+        </p>
+        <p>
+            Neutral feedback given: {store.getState().neutral}
+            <button onClick = {() => store.dispatch({type: "NEUTRAL"})}>
+                Click here to give neutral feedback
+            </button>
+        </p>
+        <p>
+            Constructive criticism given: {store.getState().constructive}
+            <button onClick = {() => store.dispatch({type: "CONSTRUCTIVE"})}>
+                Click here to give constructive criticism
+            </button>
+        </p>
+        <p>
+            <button onClick = {() => store.dispatch({type: "RESET"})}>
+                Click here to reset the feedback counter
+            </button>
+        </p>
+    </div>
+  )
+}
+
+const renderApp = () => {
+    ReactDOM.render(<App />, document.getElementById("root"))
+}
+renderApp()
+store.subscribe(renderApp)
